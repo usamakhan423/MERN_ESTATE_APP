@@ -17,8 +17,20 @@ mongoose
     console.log(err);
   });
 
+app.listen(3000, console.log("Server running on 3000"));
+
 // Api routes
 app.use("/api/user", UserRoute);
 app.use("/api/auth", AuthRoute);
 
-app.listen(3000, console.log("Server running on 3000"));
+// Middlewares
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
+
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
