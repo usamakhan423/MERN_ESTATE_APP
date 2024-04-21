@@ -1,6 +1,6 @@
-const SignIn = (req, res) => {
+export const SignIn = (req, res) => {
   // Controller logic for signing in
-  console.log("Working");
+  res.json({
+    message: "API working fine.!",
+  });
 };
-
-export default SignIn;
