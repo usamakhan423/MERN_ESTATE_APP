@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import UserRoute from "./routes/UserRoute.js";
 
 const app = express();
 dotenv.config();
@@ -13,5 +14,8 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+// Api routes
+app.use("/api", UserRoute);
 
 app.listen(3000, console.log("Server running on 3000"));
