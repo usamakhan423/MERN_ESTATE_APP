@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
-
-
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const { loading} = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,16 +25,16 @@ const Signup = () => {
     e.preventDefault();
     // Perform validation here
     if (!formData.email.trim()) {
-      toast.error('Email is required.!!')
+      toast.error("Email is required.!!");
       return;
     }
     if (!formData.password.trim()) {
-      toast.error('Password is requried.!!')
+      toast.error("Password is requried.!!");
       return;
     }
     // Clear errors if all fields are valid
     try {
-      dispatch(signInStart())
+      dispatch(signInStart());
       const res = await fetch("/api/auth/sign-in", {
         method: "POST",
         headers: {
@@ -46,11 +49,11 @@ const Signup = () => {
         return;
       }
       dispatch(signInSuccess(data));
-      navigate('/');
-      toast.success('User Login Successfully.')
+      navigate("/");
+      toast.success("User Login Successfully.");
     } catch (error) {
       dispatch(signInFailure(error.message));
-      toast.error('Wrong Credentials.!!');
+      toast.error("Wrong Credentials.!!");
     }
   };
   return (
@@ -78,6 +81,7 @@ const Signup = () => {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <OAuth />
       </form>
       <div className="flex  gap-1 mt-5">
         <p>Don't have an account?</p>
@@ -85,7 +89,7 @@ const Signup = () => {
           <span className="text-blue-800 font-semibold">Signup</span>
         </Link>
       </div>
-    </div> 
+    </div>
   );
 };
 
