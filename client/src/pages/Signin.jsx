@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
+
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false);
+  const { loading} = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate(); 
 
@@ -25,8 +30,8 @@ const Signup = () => {
       return;
     }
     // Clear errors if all fields are valid
-    setLoading(true);
     try {
+      dispatch(signInStart())
       const res = await fetch("/api/auth/sign-in", {
         method: "POST",
         headers: {
@@ -36,14 +41,15 @@ const Signup = () => {
       });
       const data = await res.json();
       if (data.success === false) {
-        setLoading(false);
+        dispatch(signInFailure(data.message));
+        toast.error(data.message);
         return;
       }
-      setLoading(false);
+      dispatch(signInSuccess(data));
       navigate('/');
       toast.success('User Login Successfully.')
     } catch (error) {
-      setLoading(false);
+      dispatch(signInFailure(error.message));
       toast.error('Wrong Credentials.!!');
     }
   };
