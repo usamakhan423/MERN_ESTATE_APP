@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import OAuth from "../components/OAuth";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,15 +23,15 @@ const Signup = () => {
     e.preventDefault();
     // Perform validation here
     if (!formData.username.trim()) {
-      toast.error('Username is required.!!')
+      toast.error("Username is required.!!");
       return;
     }
     if (!formData.email.trim()) {
-      toast.error('Email is required.!!')
+      toast.error("Email is required.!!");
       return;
     }
     if (!formData.password.trim()) {
-      toast.error('Password is requried.!!')
+      toast.error("Password is requried.!!");
       return;
     }
     // Clear errors if all fields are valid
@@ -47,11 +52,11 @@ const Signup = () => {
       }
       setLoading(false);
       console.log(formData);
-      navigate('/sign-in');
-      toast.success('User Registered Successfully.')
+      navigate("/sign-in");
+      toast.success("User Registered Successfully.");
     } catch (error) {
       setLoading(false);
-      toast.error('Wrong Credentials.!!');
+      toast.error("Wrong Credentials.!!");
     }
   };
   return (
@@ -86,6 +91,7 @@ const Signup = () => {
         >
           {loading ? "Loading..." : "Sign up"}
         </button>
+        <OAuth />
       </form>
       <div className="flex  gap-1 mt-5">
         <p>Have an account?</p>
